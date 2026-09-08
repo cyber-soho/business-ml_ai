@@ -1,0 +1,392 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Session 1 slides</title><style>
+.slide{width:960px;height:540px;padding:44px 56px;font-family:"Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;color:#1C2333;background:#fff;position:relative;box-sizing:border-box}
+.slide .sid{position:absolute;top:16px;right:22px;font-size:13px;color:#5B6472;font-weight:700}
+.slide .sid.live{color:#B45309}
+.slide h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:34px;font-weight:600;margin:0 0 6px;letter-spacing:-.3px}
+.slide h2{font-size:26px;margin:0 0 14px;color:#0F766E;font-weight:700}
+.slide .sub{color:#5B6472;font-size:16px;margin:0 0 16px}
+.slide ul{margin:0;padding-left:22px;font-size:19px;line-height:1.45}
+.slide li{margin:6px 0}
+.slide li b{color:#0F766E}
+.slide .cols{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.slide .box{border:1px solid #D9DEE5;border-radius:10px;padding:14px 16px;font-size:16px;line-height:1.4;background:#F8FAFC}
+.slide .box b{color:#0F766E}
+.slide .foot{position:absolute;left:56px;right:56px;bottom:22px;font-size:13px;color:#5B6472;border-top:1px solid #D9DEE5;padding-top:8px}
+.slide svg{width:100%;height:auto}
+.slide .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.slide .three .box{font-size:15px}
+.slide .accent{background:#0F766E;color:#fff;border:0}
+.slide .accent b{color:#CCFBF1}
+.slide .warn{background:#FEF3C7;border-color:#F59E0B}
+.slide table{border-collapse:collapse;width:100%;font-size:15px}
+.slide th,.slide td{border-bottom:1px solid #D9DEE5;padding:6px 8px;text-align:left}
+.slide th{color:#5B6472;font-size:13px}
+.slide .big{font-size:22px;font-weight:700;color:#0F766E}
+.slide .formula{font-family:Consolas,Menlo,monospace;font-size:20px;background:#F0FDFA;padding:10px 14px;border-radius:8px;display:inline-block;margin:6px 0}
+body{margin:0;background:#0F172A;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:12px}.deck{transform-origin:top left}.nav{color:#fff;font-family:sans-serif;font-size:14px}</style></head><body><div class="deck" data-k="0">
+<div class="slide"><div class="sid live">V1 (shown live)</div>
+<h1>Session 1: what machine learning can and cannot do for a business</h1>
+<p class="sub">Machine Learning and <b class="ab" data-x="1">AI</b> (artificial intelligence) in Business. Modules 1 to 3. Case: the Duolingo "<b class="ab" data-x="1">AI</b> (artificial intelligence)-first" memo, April 2025.</p>
+<div class="cols">
+<div><ul>
+<li>1 Three families of machine learning and the questions that route a problem</li>
+<li>2 When a rule is enough; build, buy or partner</li>
+<li>3 The six-stage workflow; failure at problem definition</li>
+<li>4 How a model learns: data, loss, training loop, overfitting</li>
+<li>5 Feature engineering</li>
+<li>6 Regression or classification; logistic regression; use cases</li>
+</ul></div>
+<div class="box"><b>The memo (28 April 2025):</b> contractors replaced for "work <b class="ab" data-x="1">AI</b> (artificial intelligence) can handle"; <b class="ab" data-x="1">AI</b> (artificial intelligence) use in hiring and reviews; headcount only if a team cannot automate further.<br><br><b>Behind it:</b> Birdbrain (predicts right or wrong), a reminder bandit, licensed language models, 148 courses produced with generative tooling.</div>
+</div>
+<div class="foot"><b>Definition.</b> Machine learning builds a decision procedure from recorded examples. A model is a function with adjustable parameters; training adjusts them so outputs match a target on the examples.</div>
+</div></div>
+<div class="deck" data-k="1" style="display:none">
+<div class="slide"><div class="sid">V2</div>
+<h2>Three families of machine learning, and three routing questions</h2>
+<div class="three">
+<div class="box"><b>Supervised</b><br>Signal: labels (recorded correct answers).<br>Predict a number or a category.<br>Duolingo: Birdbrain, churn, ticket routing.</div>
+<div class="box"><b>Unsupervised</b><br>Signal: structure in the inputs.<br>Clustering, anomaly detection, dimensionality reduction.<br>Duolingo: learner segments, unusual activity.</div>
+<div class="box"><b>Reinforcement</b><br>Signal: rewards after the agent's own actions.<br>Agent, environment, action, reward, policy.<br>Duolingo: reminder-text bandit.</div>
+</div>
+<div class="box accent" style="margin-top:16px"><b>Ask in order, stop at the first yes.</b> A: does the system choose actions and get feedback that depends on its choice? (reinforcement) B: do past cases carry the correct answer? (supervised) C: are we looking for unlabelled structure? (unsupervised) None: not a learning problem.</div>
+<div class="foot">Large language models: self-supervised (label = next word); mechanically supervised, economically bought or partnered.</div>
+</div></div>
+<div class="deck" data-k="2" style="display:none">
+<div class="slide"><div class="sid">V3</div>
+<h2>Rule or model? The decision test</h2>
+<ul>
+<li><b>Question 1.</b> Can a person write the decision as a few stable if-then conditions that reach the needed accuracy? Yes: ship the rule, measure it (the baseline), log corrections.</li>
+<li><b>Question 2.</b> Is the extra accuracy worth its cost? (errors avoided x cost per error) against (labelling + engineering + monthly upkeep). Payback period = one-off cost / net monthly benefit.</li>
+<li><b>Question 3.</b> Do labelled examples exist, or can the rule's corrections produce them within months?</li>
+</ul>
+<div class="box warn" style="margin-top:12px"><b>Google, Rules of Machine Learning, Rule 1:</b> do not be afraid to launch a product without machine learning. <b>Rule 3:</b> choose machine learning over a complex heuristic.</div>
+<div class="foot">Ticket example: rule 90%, model 95%, 40,000 tickets/month, 3 minutes per misroute: payback under 6 months. At 4,000 tickets/month: years.</div>
+</div></div>
+<div class="deck" data-k="3" style="display:none">
+<div class="slide"><div class="sid">V4</div>
+<h2>Build, buy or partner: weighted criteria</h2>
+<table><tbody><tr><th>Criterion (weight)</th><th>Build</th><th>Buy</th><th>Partner</th></tr>
+<tr><td>Strategic differentiation (0.30)</td><td>high if core</td><td>low</td><td>medium</td></tr>
+<tr><td>Speed to value (0.25)</td><td>slow</td><td>fast</td><td>medium</td></tr>
+<tr><td>Total cost, 2 years (0.20)</td><td>high</td><td>low to medium</td><td>medium</td></tr>
+<tr><td>Control of data and model (0.15)</td><td>full</td><td>limited</td><td>shared</td></tr>
+<tr><td>In-house skills needed (0.10)</td><td>many</td><td>few</td><td>some</td></tr></tbody></table>
+<p style="margin-top:14px;font-size:17px">Score = sum of weight x rating (1 to 5). Criteria fixed across projects; ratings change.</p>
+<div class="foot">Birdbrain: differentiation 5, build. Ticket routing: differentiation 2, buy. Conversational practice: foundation model licensed, Duolingo data on top, partner.</div>
+</div></div>
+<div class="deck" data-k="4" style="display:none">
+<div class="slide" style="padding:28px 40px"><div class="sid live">V5 overview (shown live)</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" width="900" height="470" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="ah3" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5B6472"></path></marker>
+    <marker id="ah3r" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#B45309"></path></marker>
+  </defs>
+  <rect width="900" height="470" fill="#FFFFFF"></rect>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#1C2333">The six-stage machine-learning workflow</text>
+  <text x="450" y="56" text-anchor="middle" font-size="12" fill="#5B6472">Every stage can send the project back to an earlier one. Stage 1 is where most projects are lost.</text>
+
+  <!-- stage boxes -->
+  <g font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">
+    <rect x="30" y="110" width="130" height="70" rx="9" fill="#B91C1C"></rect>
+    <text x="95" y="140">1 Problem</text><text x="95" y="158">definition</text>
+    <rect x="176" y="110" width="130" height="70" rx="9" fill="#1C2333"></rect>
+    <text x="241" y="140">2 Data</text><text x="241" y="158">collection</text>
+    <rect x="322" y="110" width="130" height="70" rx="9" fill="#1C2333"></rect>
+    <text x="387" y="140">3 Data preparation</text><text x="387" y="158">and features</text>
+    <rect x="468" y="110" width="130" height="70" rx="9" fill="#1C2333"></rect>
+    <text x="533" y="140">4 Model</text><text x="533" y="158">training</text>
+    <rect x="614" y="110" width="130" height="70" rx="9" fill="#1C2333"></rect>
+    <text x="679" y="140">5 Evaluation</text><text x="679" y="158">on unseen data</text>
+    <rect x="760" y="110" width="130" height="70" rx="9" fill="#0F766E"></rect>
+    <text x="825" y="140">6 Deployment</text><text x="825" y="158">and monitoring</text>
+  </g>
+  <!-- forward arrows -->
+  <g stroke="#5B6472" stroke-width="2" marker-end="url(#ah3)">
+    <line x1="160" y1="145" x2="174" y2="145"></line>
+    <line x1="306" y1="145" x2="320" y2="145"></line>
+    <line x1="452" y1="145" x2="466" y2="145"></line>
+    <line x1="598" y1="145" x2="612" y2="145"></line>
+    <line x1="744" y1="145" x2="758" y2="145"></line>
+  </g>
+  <!-- feedback loops (animated dashes) -->
+  <g fill="none" stroke="#B45309" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#ah3r)">
+    <path d="M679,180 C679,230 387,230 387,182">
+      <animate attributeName="stroke-dashoffset" from="40" to="0" dur="2s" repeatCount="indefinite"></animate>
+    </path>
+    <path d="M825,180 C825,262 95,262 95,182">
+      <animate attributeName="stroke-dashoffset" from="40" to="0" dur="2.6s" repeatCount="indefinite"></animate>
+    </path>
+    <path d="M241,180 C241,210 95,210 95,182">
+      <animate attributeName="stroke-dashoffset" from="40" to="0" dur="1.6s" repeatCount="indefinite"></animate>
+    </path>
+  </g>
+  <text x="533" y="228" text-anchor="middle" font-size="10" fill="#B45309">evaluation reveals a data problem: back to stage 3</text>
+  <text x="460" y="258" text-anchor="middle" font-size="10" fill="#B45309">production drift or a changed business goal: back to stage 1</text>
+  <text x="168" y="218" text-anchor="middle" font-size="10" fill="#B45309">no usable data: redefine</text>
+
+  <!-- what each stage answers -->
+  <g font-size="10.5" fill="#1C2333">
+    <text x="95" y="290" text-anchor="middle">Which decision?</text><text x="95" y="304" text-anchor="middle">Which target, metric,</text><text x="95" y="318" text-anchor="middle">baseline, error cost?</text>
+    <text x="241" y="290" text-anchor="middle">Which records hold</text><text x="241" y="304" text-anchor="middle">the target? Who owns</text><text x="241" y="318" text-anchor="middle">them? Enough labels?</text>
+    <text x="387" y="290" text-anchor="middle">Clean, join, aggregate;</text><text x="387" y="304" text-anchor="middle">build the feature table;</text><text x="387" y="318" text-anchor="middle">check for leakage</text>
+    <text x="533" y="290" text-anchor="middle">Choose a loss; run the</text><text x="533" y="304" text-anchor="middle">training loop; tune</text><text x="533" y="318" text-anchor="middle">on validation data</text>
+    <text x="679" y="290" text-anchor="middle">Test on held-out data;</text><text x="679" y="304" text-anchor="middle">translate errors into</text><text x="679" y="318" text-anchor="middle">business cost</text>
+    <text x="825" y="290" text-anchor="middle">Serve predictions;</text><text x="825" y="304" text-anchor="middle">watch accuracy and</text><text x="825" y="318" text-anchor="middle">data over time</text>
+  </g>
+
+  <!-- failure bars -->
+  <text x="30" y="360" font-size="12" font-weight="700" fill="#1C2333">Probability that a project stops at each stage (teaching assumption used in the classroom simulation; bar = share of full width)</text>
+  <g font-size="10" fill="#1C2333">
+    <rect x="30" y="372" width="130" height="16" fill="#FEE2E2"></rect><rect x="30" y="372" width="46" height="16" fill="#B91C1C"></rect><text x="95" y="404" text-anchor="middle">about 35%</text>
+    <rect x="176" y="372" width="130" height="16" fill="#E5E7EB"></rect><rect x="176" y="372" width="26" height="16" fill="#5B6472"></rect><text x="241" y="404" text-anchor="middle">about 20%</text>
+    <rect x="322" y="372" width="130" height="16" fill="#E5E7EB"></rect><rect x="322" y="372" width="16" height="16" fill="#5B6472"></rect><text x="387" y="404" text-anchor="middle">about 12%</text>
+    <rect x="468" y="372" width="130" height="16" fill="#E5E7EB"></rect><rect x="468" y="372" width="7" height="16" fill="#5B6472"></rect><text x="533" y="404" text-anchor="middle">about 5%</text>
+    <rect x="614" y="372" width="130" height="16" fill="#E5E7EB"></rect><rect x="614" y="372" width="13" height="16" fill="#5B6472"></rect><text x="679" y="404" text-anchor="middle">about 10%</text>
+    <rect x="760" y="372" width="130" height="16" fill="#E5E7EB"></rect><rect x="760" y="372" width="20" height="16" fill="#5B6472"></rect><text x="825" y="404" text-anchor="middle">about 15%</text>
+  </g>
+  <text x="450" y="440" text-anchor="middle" font-size="11" fill="#5B6472">Related to CRISP-DM, the Cross-Industry Standard Process for Data Mining (1999), which used the same six phases for analytics projects.</text>
+</svg>
+</div></div>
+<div class="deck" data-k="5" style="display:none">
+<div class="slide"><div class="sid">V6</div>
+<h2>Training data: rows, features and labels</h2>
+<div class="cols">
+<div><table><tbody><tr><th>learner (row)</th><th>feature x: lessons this week</th><th>label y: minutes next week</th><th>split</th></tr>
+<tr><td>1</td><td>1</td><td>10.6</td><td>train</td></tr><tr><td>2</td><td>2</td><td>7.6</td><td>train</td></tr><tr><td>3</td><td>3</td><td>16.5</td><td>test</td></tr><tr><td>4</td><td>4</td><td>21.1</td><td>train</td></tr><tr><td>5</td><td>5</td><td>20.0</td><td>train</td></tr><tr><td>...</td><td>...</td><td>...</td><td>...</td></tr></tbody></table></div>
+<div><ul>
+<li><b>Example:</b> one row, one unit (a learner)</li>
+<li><b>Feature:</b> known at prediction time</li>
+<li><b>Label:</b> the correct answer, recorded afterwards</li>
+<li><b>Training set:</b> 8 rows the model may see</li>
+<li><b>Test set:</b> 4 rows locked away until the end</li>
+<li><b>Model:</b> minutes = w x lessons + b; parameters w, b start at 0</li>
+</ul></div>
+</div>
+<div class="foot">"The model learned" means: the numbers w and b moved. In Birdbrain the same sentence holds with millions of numbers.</div>
+</div></div>
+<div class="deck" data-k="6" style="display:none">
+<div class="slide" style="padding:24px 40px"><div class="sid live">V7 (shown live)</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" width="900" height="470" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="ah4" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5B6472"></path></marker>
+    <marker id="ah4t" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0F766E"></path></marker>
+  </defs>
+  <rect width="900" height="470" fill="#FFFFFF"></rect>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#1C2333">How a model learns: the training loop</text>
+  <text x="450" y="56" text-anchor="middle" font-size="12" fill="#5B6472">One pass of the loop = one iteration. Training repeats it until the loss stops falling.</text>
+
+  <!-- training data table -->
+  <rect x="30" y="90" width="230" height="150" rx="9" fill="#F9FAFB" stroke="#D1D5DB"></rect>
+  <text x="145" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#1C2333">Training data</text>
+  <g font-size="10.5" fill="#1C2333">
+    <text x="46" y="134" font-weight="700">learner</text><text x="110" y="134" font-weight="700">feature x</text><text x="196" y="134" font-weight="700">label y</text>
+    <line x1="40" y1="140" x2="250" y2="140" stroke="#D1D5DB"></line>
+    <text x="46" y="156">1</text><text x="110" y="156">2 lessons</text><text x="196" y="156">12 min</text>
+    <text x="46" y="172">2</text><text x="110" y="172">5 lessons</text><text x="196" y="172">22 min</text>
+    <text x="46" y="188">3</text><text x="110" y="188">8 lessons</text><text x="196" y="188">31 min</text>
+    <text x="46" y="204">...</text><text x="110" y="204">...</text><text x="196" y="204">...</text>
+  </g>
+  <text x="145" y="228" text-anchor="middle" font-size="9.5" fill="#5B6472">rows = examples, columns = features, last column = label</text>
+
+  <!-- model -->
+  <line x1="260" y1="165" x2="300" y2="165" stroke="#5B6472" stroke-width="2" marker-end="url(#ah4)"></line>
+  <rect x="302" y="125" width="150" height="80" rx="9" fill="#1C2333"></rect>
+  <text x="377" y="152" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">Model</text>
+  <text x="377" y="172" text-anchor="middle" font-size="11" fill="#E5E7EB">y = w x + b</text>
+  <text x="377" y="190" text-anchor="middle" font-size="10" fill="#9CA3AF">parameters w, b</text>
+
+  <!-- prediction -->
+  <line x1="452" y1="165" x2="492" y2="165" stroke="#5B6472" stroke-width="2" marker-end="url(#ah4)"></line>
+  <rect x="494" y="135" width="130" height="60" rx="9" fill="#FFFFFF" stroke="#1C2333"></rect>
+  <text x="559" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#1C2333">Prediction</text>
+  <text x="559" y="180" text-anchor="middle" font-size="10.5" fill="#5B6472">for every training row</text>
+
+  <!-- loss -->
+  <line x1="624" y1="165" x2="664" y2="165" stroke="#5B6472" stroke-width="2" marker-end="url(#ah4)"></line>
+  <rect x="666" y="120" width="204" height="90" rx="9" fill="#FEF3C7" stroke="#B45309"></rect>
+  <text x="768" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">Loss function</text>
+  <text x="768" y="165" text-anchor="middle" font-size="10.5" fill="#1C2333">compares predictions with labels</text>
+  <text x="768" y="183" text-anchor="middle" font-size="10.5" fill="#1C2333">one number: mean squared error</text>
+  <text x="768" y="200" text-anchor="middle" font-size="10" fill="#5B6472">large = model is wrong on average</text>
+
+  <!-- update -->
+  <path d="M768,210 C768,290 377,290 377,207" fill="none" stroke="#0F766E" stroke-width="2.4" marker-end="url(#ah4t)"></path>
+  <rect x="470" y="262" width="210" height="52" rx="9" fill="#0F766E"></rect>
+  <text x="575" y="283" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">Update the parameters</text>
+  <text x="575" y="301" text-anchor="middle" font-size="10.5" fill="#CCFBF1">w := w - learning rate x gradient</text>
+  <text x="330" y="268" text-anchor="end" font-size="10" fill="#0F766E">gradient = direction in which the loss falls fastest</text>
+
+  <!-- overfitting inset -->
+  <rect x="30" y="330" width="840" height="120" rx="9" fill="#F9FAFB" stroke="#D1D5DB"></rect>
+  <text x="46" y="352" font-size="12" font-weight="700" fill="#1C2333">First look at overfitting: the loss to trust is the one on data the model never saw</text>
+  <!-- left mini plot: good fit -->
+  <g>
+    <line x1="60" y1="430" x2="250" y2="430" stroke="#9CA3AF"></line><line x1="60" y1="430" x2="60" y2="365" stroke="#9CA3AF"></line>
+    <circle cx="80" cy="418" r="3" fill="#0F766E"></circle><circle cx="110" cy="405" r="3" fill="#0F766E"></circle><circle cx="140" cy="400" r="3" fill="#0F766E"></circle><circle cx="170" cy="388" r="3" fill="#0F766E"></circle><circle cx="200" cy="384" r="3" fill="#0F766E"></circle><circle cx="230" cy="372" r="3" fill="#0F766E"></circle>
+    <circle cx="125" cy="398" r="3" fill="#B45309"></circle><circle cx="185" cy="392" r="3" fill="#B45309"></circle>
+    <line x1="65" y1="424" x2="245" y2="368" stroke="#1C2333" stroke-width="1.8"></line>
+    <text x="155" y="445" text-anchor="middle" font-size="9.5" fill="#1C2333">simple model: small error on training and test points</text>
+  </g>
+  <!-- middle mini plot: overfit -->
+  <g>
+    <line x1="330" y1="430" x2="520" y2="430" stroke="#9CA3AF"></line><line x1="330" y1="430" x2="330" y2="365" stroke="#9CA3AF"></line>
+    <circle cx="350" cy="418" r="3" fill="#0F766E"></circle><circle cx="380" cy="405" r="3" fill="#0F766E"></circle><circle cx="410" cy="400" r="3" fill="#0F766E"></circle><circle cx="440" cy="388" r="3" fill="#0F766E"></circle><circle cx="470" cy="384" r="3" fill="#0F766E"></circle><circle cx="500" cy="372" r="3" fill="#0F766E"></circle>
+    <circle cx="395" cy="398" r="3" fill="#B45309"></circle><circle cx="455" cy="392" r="3" fill="#B45309"></circle>
+    <path d="M338,428 C350,418 350,418 350,418 C365,380 372,420 380,405 C388,392 400,425 410,400 C420,372 430,415 440,388 C450,365 462,410 470,384 C478,360 492,392 500,372 C508,355 515,370 520,368" fill="none" stroke="#B91C1C" stroke-width="1.8"></path>
+    <text x="425" y="445" text-anchor="middle" font-size="9.5" fill="#1C2333">flexible model: zero training error, large test error</text>
+  </g>
+  <!-- right: loss curves -->
+  <g>
+    <line x1="600" y1="430" x2="850" y2="430" stroke="#9CA3AF"></line><line x1="600" y1="430" x2="600" y2="365" stroke="#9CA3AF"></line>
+    <path d="M602,372 C640,420 700,426 848,428" fill="none" stroke="#0F766E" stroke-width="1.8"></path>
+    <path d="M602,374 C640,412 690,400 720,398 C760,396 810,384 848,372" fill="none" stroke="#B91C1C" stroke-width="1.8"></path>
+    <text x="760" y="378" font-size="9.5" fill="#B91C1C">test loss rises</text>
+    <text x="760" y="424" font-size="9.5" fill="#0F766E">training loss keeps falling</text>
+    <text x="725" y="445" text-anchor="middle" font-size="9.5" fill="#1C2333">model flexibility or training time (to the right)</text>
+  </g>
+</svg>
+</div></div>
+<div class="deck" data-k="7" style="display:none">
+<div class="slide"><div class="sid">V8</div>
+<h2>The loss function: one number for how wrong the model is</h2>
+<p class="formula"><b class="ab" data-x="1">MSE</b> (mean squared error) = (1/n) x sum over examples of (prediction - label)^2</p>
+<ul>
+<li>Squaring removes the sign and penalises large errors far more than small ones (error 10 counts 100, error 1 counts 1).</li>
+<li><b>Mean absolute error</b> averages the plain differences: every minute of error costs the same.</li>
+<li>The choice of loss is a business choice: the model will be exactly as wrong as the loss allowed.</li>
+<li>For categories (churned / stayed) the loss is <b>log-loss</b>: see V14.</li>
+</ul>
+<div class="foot">Worked row: learner practised 22 minutes, prediction 0 at the start, squared error 484; after training, prediction 20.4, squared error 2.6.</div>
+</div></div>
+<div class="deck" data-k="8" style="display:none">
+<div class="slide"><div class="sid">V9</div>
+<h2>Gradient descent: the update step and the learning rate</h2>
+<p class="formula">w := w - learning rate x gradient(w)&nbsp;&nbsp;&nbsp;&nbsp;b := b - learning rate x gradient(b)</p>
+<ul>
+<li>For a line with squared error: gradient(w) = average of 2 x error x feature; gradient(b) = average of 2 x error.</li>
+<li>The gradient points where the loss rises fastest; the parameters move the opposite way.</li>
+<li><b>Learning rate</b> (a hyperparameter): too large diverges, too small crawls. Example uses 0.008.</li>
+<li><b>Iteration:</b> one pass round the loop. <b>Epoch:</b> one pass through all rows. <b>Batch:</b> a random subset when the table is too large.</li>
+</ul>
+<div class="foot">Healthy training: loss drops steeply in the first iterations, then flattens.</div>
+</div></div>
+<div class="deck" data-k="9" style="display:none">
+<div class="slide"><div class="sid">V10</div>
+<h2>Overfitting: a first look</h2>
+<div class="cols">
+<div class="box"><b>Trained line</b><br>training loss about 17<br>test loss about 17<br>The model generalises.</div>
+<div class="box warn"><b>Degree-7 polynomial through the 8 training points</b><br>training loss 0.000<br>test loss in the thousands<br>It memorised the learners, noise included.</div>
+</div>
+<ul style="margin-top:14px">
+<li>Only the loss on data the model never saw measures usefulness.</li>
+<li>A perfect training score is a warning, not an achievement.</li>
+<li>Risk rises with many parameters per example, noisy labels, long training. Defences: more data, simpler models, regularisation, early stopping.</li>
+</ul>
+<div class="foot">Duolingo: a churn model trained on Spanish learners only can be perfect on them and wrong on every other course.</div>
+</div></div>
+<div class="deck" data-k="10" style="display:none">
+<div class="slide"><div class="sid">V11</div>
+<h2>Feature engineering: from raw records to a feature table</h2>
+<div class="three">
+<div class="box"><b>Raw event log</b><br>one row per lesson<br>timestamp, learner id, seconds, platform, accuracy<br>hundreds of rows per learner</div>
+<div class="box accent"><b>Five transformations</b><br>counting over a window<br>recency<br>aggregation<br>one-hot encoding<br>scaling</div>
+<div class="box"><b>Feature table</b><br>one row per learner<br>every cell numeric<br>add the label column and it is a training set</div>
+</div>
+<div class="box warn" style="margin-top:14px"><b>Leakage:</b> a feature that uses information unavailable at prediction time. Excellent test score, useless model. Check every column against "now".</div>
+<div class="foot">A good feature is available at prediction time, stable across product changes, and explainable to the person who acts on the prediction.</div>
+</div></div>
+<div class="deck" data-k="11" style="display:none">
+<div class="slide"><div class="sid">V12</div>
+<h2>Regression or classification: the output type decides</h2>
+<div class="cols">
+<div class="box"><b>Regression: the answer is a number on a scale</b><br>minutes, euros, days, units<br>loss: mean squared error<br>output read directly as the estimate</div>
+<div class="box"><b>Classification: the answer is one of a fixed set of categories</b><br>churned / stayed, billing / other, right / wrong<br>binary (two classes) or multi-class<br>output: a probability, turned into a class with a threshold</div>
+</div>
+<p style="margin-top:16px;font-size:18px">The features do not decide the task. The same two columns can feed a regression (minutes next week) and a classification (churn). The label column changes, so the loss and the use of the output change.</p>
+<div class="foot">First question for any "we need a model" request: is the answer a number or a category?</div>
+</div></div>
+<div class="deck" data-k="12" style="display:none">
+<div class="slide"><div class="sid">V13</div>
+<h2>Linear regression for business numbers</h2>
+<p class="formula">prediction = w1 x feature1 + w2 x feature2 + ... + b</p>
+<ul>
+<li>Each weight says how much the prediction changes when its feature rises by one unit, others fixed.</li>
+<li>The weights are an explanation as well as a prediction: the first model to try for any business number.</li>
+<li>Use cases: demand and sales forecasting, price and cost estimation, delivery and processing time, lifetime value, practice minutes.</li>
+<li>When the relationship is not a straight line, more flexible models exist; V10 states the price of flexibility.</li>
+</ul>
+<div class="foot">Sub-topic 4's line is the one-feature case: minutes = w x lessons + b.</div>
+</div></div>
+<div class="deck" data-k="13" style="display:none">
+<div class="slide" style="padding:24px 40px"><div class="sid live">V14 (shown live)</div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" width="900" height="470" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="ah6" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5B6472"></path></marker>
+  </defs>
+  <rect width="900" height="470" fill="#FFFFFF"></rect>
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#1C2333">Regression or classification? The output type decides</text>
+
+  <!-- decision strip -->
+  <rect x="60" y="56" width="780" height="46" rx="9" fill="#F9FAFB" stroke="#D1D5DB"></rect>
+  <text x="450" y="76" text-anchor="middle" font-size="12" fill="#1C2333">Ask: what kind of thing is the answer? A number on a scale -&gt; regression. One of a fixed set of categories -&gt; classification.</text>
+  <text x="450" y="93" text-anchor="middle" font-size="10.5" fill="#5B6472">Same features can feed either task; the label column and the loss function change.</text>
+
+  <!-- regression panel -->
+  <rect x="30" y="120" width="400" height="300" rx="9" fill="#F0FDFA" stroke="#0F766E"></rect>
+  <text x="230" y="144" text-anchor="middle" font-size="14" font-weight="700" fill="#0F766E">Regression: predict a number</text>
+  <text x="230" y="162" text-anchor="middle" font-size="10.5" fill="#1C2333">minutes practised next week, revenue, delivery time, demand</text>
+  <line x1="70" y1="360" x2="390" y2="360" stroke="#9CA3AF"></line><line x1="70" y1="360" x2="70" y2="190" stroke="#9CA3AF"></line>
+  <text x="230" y="378" text-anchor="middle" font-size="10" fill="#5B6472">lessons this week</text>
+  <text x="58" y="275" text-anchor="end" font-size="10" fill="#5B6472">min</text>
+  <g fill="#0F766E">
+    <circle cx="100" cy="335" r="4"></circle><circle cx="130" cy="322" r="4"></circle><circle cx="160" cy="300" r="4"></circle><circle cx="190" cy="292" r="4"></circle><circle cx="220" cy="268" r="4"></circle><circle cx="250" cy="262" r="4"></circle><circle cx="280" cy="240" r="4"></circle><circle cx="310" cy="228" r="4"></circle><circle cx="340" cy="206" r="4"></circle><circle cx="370" cy="212" r="4"></circle>
+  </g>
+  <line x1="80" y1="345" x2="385" y2="203" stroke="#1C2333" stroke-width="2"></line>
+  <text x="230" y="404" text-anchor="middle" font-size="10.5" fill="#1C2333">loss: mean squared error; output read directly as the estimate</text>
+
+  <!-- classification panel -->
+  <rect x="470" y="120" width="400" height="300" rx="9" fill="#FFF7ED" stroke="#B45309"></rect>
+  <text x="670" y="144" text-anchor="middle" font-size="14" font-weight="700" fill="#B45309">Classification: predict a category</text>
+  <text x="670" y="162" text-anchor="middle" font-size="10.5" fill="#1C2333">churn yes/no, billing/other ticket, fraud/legitimate, answer right/wrong</text>
+  <line x1="510" y1="360" x2="830" y2="360" stroke="#9CA3AF"></line><line x1="510" y1="360" x2="510" y2="190" stroke="#9CA3AF"></line>
+  <text x="670" y="378" text-anchor="middle" font-size="10" fill="#5B6472">days since last lesson</text>
+  <text x="498" y="200" text-anchor="end" font-size="10" fill="#5B6472">1.0</text>
+  <text x="498" y="360" text-anchor="end" font-size="10" fill="#5B6472">0.0</text>
+  <text x="498" y="280" text-anchor="end" font-size="10" fill="#5B6472">0.5</text>
+  <!-- data at 0 and 1 -->
+  <g>
+    <circle cx="530" cy="356" r="4" fill="#15803D"></circle><circle cx="560" cy="356" r="4" fill="#15803D"></circle><circle cx="590" cy="356" r="4" fill="#15803D"></circle><circle cx="620" cy="356" r="4" fill="#15803D"></circle><circle cx="680" cy="356" r="4" fill="#15803D"></circle>
+    <circle cx="650" cy="194" r="4" fill="#B91C1C"></circle><circle cx="710" cy="194" r="4" fill="#B91C1C"></circle><circle cx="740" cy="194" r="4" fill="#B91C1C"></circle><circle cx="780" cy="194" r="4" fill="#B91C1C"></circle><circle cx="810" cy="194" r="4" fill="#B91C1C"></circle>
+  </g>
+  <path d="M515,355 C600,352 640,330 670,278 C700,226 740,200 825,196" fill="none" stroke="#1C2333" stroke-width="2"></path>
+  <line x1="510" y1="278" x2="830" y2="278" stroke="#B45309" stroke-dasharray="5 4"></line>
+  <text x="826" y="272" text-anchor="end" font-size="10" fill="#B45309">threshold 0.5</text>
+  <line x1="670" y1="278" x2="670" y2="360" stroke="#B45309" stroke-dasharray="3 3"></line>
+  <text x="670" y="404" text-anchor="middle" font-size="10.5" fill="#1C2333">logistic regression: sigmoid output = probability; loss: log-loss; threshold = business choice</text>
+
+  <text x="450" y="446" text-anchor="middle" font-size="11" fill="#5B6472">Green = stayed (label 0), red = churned (label 1). Moving the threshold trades missed churners against unneeded offers.</text>
+</svg>
+</div></div>
+<div class="deck" data-k="14" style="display:none">
+<div class="slide"><div class="sid">V15</div>
+<h2>Thresholds, error types and business cost</h2>
+<table><tbody><tr><th></th><th>truth: churned</th><th>truth: stayed</th></tr>
+<tr><td><b>predicted churn</b></td><td>true positive: offer well spent</td><td>false positive: unneeded offer, about 1 EUR</td></tr>
+<tr><td><b>predicted stay</b></td><td>false negative: lost subscription, about 7 EUR</td><td>true negative</td></tr></tbody></table>
+<ul style="margin-top:12px">
+<li><b>Accuracy</b> = correct / all. <b>Precision</b> = <b class="ab" data-x="1">TP</b> (true positive) / predicted positive. <b>Recall</b> = <b class="ab" data-x="1">TP</b> (true positive) / real positive.</li>
+<li>If 3% churn, "everyone stays" is 97% accurate and useless (recall 0).</li>
+<li>Lower threshold: more flagged, fewer missed churners, more unneeded offers. The threshold is set by the costs, by the manager who owns them.</li>
+</ul>
+<div class="foot">One model, several thresholds: each campaign has its own costs.</div>
+</div></div>
+<div class="deck" data-k="15" style="display:none">
+<div class="slide"><div class="sid">V16</div>
+<h2>Use-case map, session summary, assignments</h2>
+<div class="cols">
+<div class="box"><b>Regression:</b> demand, sales, prices, costs, delivery time, lifetime value, practice minutes.<br><b>Classification:</b> churn, fraud, default, lead scoring, ticket routing, moderation, defects, right-or-wrong answers.</div>
+<div class="box"><b>Summary:</b> 1 family from the signal; 2 rule first, then cost, then labels; 3 stage 1 decides; 4 training moves numbers, test loss measures; 5 the model eats a feature table; 6 output type decides, threshold is a business choice.</div>
+</div>
+<div class="box accent" style="margin-top:14px"><b>Assignments.</b> Card Sort (Module 1) and Problem Framing Worksheet (Module 3): before Session 2. Feature Table (Module 2): before Session 3.</div>
+<div class="foot">Case: the memo was an organisational policy, not a defined machine-learning programme; the analytical gap was stage 1.</div>
+</div></div><div class="nav">Arrow keys or click to move between slides. Slide <span id="k">1</span> of 16</div><script>var k=0,n=16;function show(){document.querySelectorAll('.deck').forEach(function(d,i){d.style.display=i===k?'block':'none'});document.getElementById('k').textContent=k+1;fit()}function fit(){var s=Math.min((innerWidth-40)/960,(innerHeight-80)/540);document.querySelectorAll('.deck').forEach(function(d){d.style.transform='scale('+s+')';d.style.width='960px';d.style.height='540px'});}addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){k=Math.min(n-1,k+1);show()}if(e.key==='ArrowLeft'){k=Math.max(0,k-1);show()}});addEventListener('click',function(){k=(k+1)%n;show()});addEventListener('resize',fit);show();</script></body></html>

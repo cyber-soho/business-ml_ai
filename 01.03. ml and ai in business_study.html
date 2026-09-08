@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML & AI in Business — Study Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .flashcard-container { perspective: 1000px; }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard-inner.flipped { transform: rotateY(180deg); }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        .card-back { transform: rotateY(180deg); background-color: #eef2ff; border: 2px solid #6366f1; }
+        .card-front { background-color: white; border: 2px solid #e2e8f0; }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            height: 300px;
+        }
+
+        .badge-mcq { background-color: #e0e7ff; color: #4338ca; }
+        .badge-msq { background-color: #fce7f3; color: #be185d; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🤖</span>
+                <h1 class="text-xl font-bold tracking-tight text-slate-800">ML & AI in Business — Study Hub</h1>
+            </div>
+            <nav class="flex bg-slate-100 p-1 rounded-xl shadow-inner">
+                <button onclick="switchTab('dashboard')" class="nav-btn active px-6 py-2 rounded-lg text-sm font-semibold transition-all bg-white text-indigo-600 shadow-sm" id="btn-dashboard">Dashboard</button>
+                <button onclick="switchTab('flashcards')" class="nav-btn px-6 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-slate-900" id="btn-flashcards">Flashcards</button>
+                <button onclick="switchTab('quiz')" class="nav-btn px-6 py-2 rounded-lg text-sm font-semibold transition-all text-slate-600 hover:text-slate-900" id="btn-quiz">Quiz</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl mx-auto px-4 py-8 w-full">
+
+        <section id="dashboard" class="tab-content active space-y-8">
+            <div class="bg-indigo-600 rounded-3xl p-8 text-white shadow-xl shadow-indigo-100">
+                <h2 class="text-3xl font-bold mb-4">Welcome back, Practitioner.</h2>
+                <p class="text-indigo-100 max-w-2xl leading-relaxed">
+                    This Study Hub covers Session 1 — Machine Learning & AI in Business, built around the Duolingo case study: choosing the right learning family, deciding between a rule, a model, or a bought product, the six-stage ML workflow, training loops and overfitting, feature engineering, and regression vs. classification with decision thresholds.
+                </p>
+                <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-indigo-500/30 p-4 rounded-2xl flex items-center gap-4 border border-indigo-400/30">
+                        <span class="text-3xl">🗂️</span>
+                        <div>
+                            <div class="text-xs uppercase font-bold text-indigo-200 tracking-widest">Memorization</div>
+                            <div class="text-lg font-bold">25 Flashcards</div>
+                        </div>
+                    </div>
+                    <div class="bg-indigo-500/30 p-4 rounded-2xl flex items-center gap-4 border border-indigo-400/30">
+                        <span class="text-3xl">📝</span>
+                        <div>
+                            <div class="text-xs uppercase font-bold text-indigo-200 tracking-widest">Assessment</div>
+                            <div class="text-lg font-bold">30 MCQs · 12 MSQs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200">
+                    <h3 class="font-bold text-lg mb-2">Instructions</h3>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-start gap-2"><span>✅</span> Use Flashcards to master the terminology and the "What."</li>
+                        <li class="flex items-start gap-2"><span>✅</span> Take the Quiz to practice applying concepts to real business scenarios.</li>
+                        <li class="flex items-start gap-2"><span>✅</span> MCQ questions have 4 options and exactly one correct answer.</li>
+                        <li class="flex items-start gap-2"><span>✅</span> MSQ questions have 6 options; the number in brackets after the question tells you how many options are correct.</li>
+                        <li class="flex items-start gap-2"><span>✅</span> Complete the quiz to see your data-driven performance breakdown.</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-2xl text-white">
+                    <h3 class="font-bold text-lg mb-2 text-indigo-400">Quick Pro-Tip</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        A model is not automatically better than a rule. Always ask: is there a recorded label, does the system need to act and learn from feedback, and would building actually differentiate the business — or is buying a mature product the smarter call?
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="flashcards" class="tab-content space-y-8">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-slate-800">Knowledge Cards</h2>
+                <p class="text-slate-500 text-sm mt-1">Click the card to flip it, use the arrows to navigate.</p>
+            </div>
+
+            <div class="max-w-md mx-auto flashcard-container">
+                <div class="flashcard-inner" id="flashcard-inner" onclick="this.classList.toggle('flipped')">
+                    <div class="card-front">
+                        <p id="card-front-text" class="text-xl font-bold text-slate-800"></p>
+                    </div>
+                    <div class="card-back">
+                        <p id="card-back-text" class="text-lg text-indigo-900 leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-6">
+                <button onclick="prevCard()" class="p-3 rounded-full bg-white border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm">⬅️</button>
+                <div class="text-slate-400 font-mono text-sm" id="card-counter">1 / 25</div>
+                <button onclick="nextCard()" class="p-3 rounded-full bg-white border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm">➡️</button>
+            </div>
+
+            <div class="max-w-md mx-auto h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div id="card-progress" class="h-full bg-indigo-500 transition-all duration-300" style="width: 4%"></div>
+            </div>
+        </section>
+
+        <section id="quiz" class="tab-content space-y-8">
+            <div id="quiz-intro" class="text-center py-12">
+                <div class="text-5xl mb-4">🏆</div>
+                <h2 class="text-3xl font-bold text-slate-800">Ready for the Assessment?</h2>
+                <p class="text-slate-500 mt-2 mb-8">30 single-answer MCQs and 12 multi-answer MSQs on ML &amp; AI in Business, drawn from the Duolingo case study.</p>
+                <button onclick="startQuiz()" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-bold shadow-lg hover:bg-indigo-700 transition-transform hover:-translate-y-1">Start Quiz</button>
+            </div>
+
+            <div id="quiz-active" class="hidden max-w-2xl mx-auto space-y-6">
+                <div class="flex justify-between items-center text-sm font-bold text-slate-400">
+                    <span id="quiz-progress-text">Question 1 of 42</span>
+                    <span id="quiz-score-live">Score: 0</span>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span id="quiz-type-badge" class="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide"></span>
+                        <span id="quiz-topic-badge" class="text-xs font-semibold text-slate-400"></span>
+                    </div>
+                    <div id="quiz-question" class="text-xl font-bold text-slate-800 mb-6"></div>
+                    <div id="quiz-options" class="space-y-3"></div>
+
+                    <div id="quiz-submit-box" class="hidden mt-6">
+                        <button onclick="submitMSQ()" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700">Submit Answer</button>
+                    </div>
+
+                    <div id="quiz-feedback" class="hidden mt-6 p-4 rounded-xl text-sm border"></div>
+
+                    <div id="quiz-hint-box" class="mt-6 text-center">
+                        <button onclick="toggleHint()" id="hint-toggle-btn" class="text-xs text-indigo-500 font-bold hover:underline">Need a hint? 💡</button>
+                        <p id="quiz-hint" class="hidden mt-2 text-xs text-slate-500 italic"></p>
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button id="next-q-btn" onclick="nextQuestion()" class="hidden ml-auto bg-slate-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-slate-800">Next Question</button>
+                </div>
+            </div>
+
+            <div id="quiz-results" class="hidden text-center space-y-8 animate-fadeIn">
+                <h2 class="text-3xl font-bold text-slate-800">Assessment Complete!</h2>
+                <div class="chart-container">
+                    <canvas id="resultsChart"></canvas>
+                </div>
+                <div id="result-summary" class="text-xl font-bold"></div>
+                <button onclick="resetQuiz()" class="bg-slate-200 text-slate-800 px-8 py-3 rounded-xl font-bold hover:bg-slate-300">Try Again</button>
+            </div>
+        </section>
+
+    </main>
+
+<!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-6 mt-8">
+        <div class="container mx-auto text-center text-sm">
+            <p style="display:flex; justify-content:center; align-items:center; gap:8px; margin:0;">
+				<img src="cyber_soho.png"
+					 alt="Cyber Soho"
+					 style="height:50px;">
+				<span>Educational Hub &copy; 2026 | From the Industry to the Classroom — Building the IT’s Future, Today and Together !
+				<br>ALL Rights Reserverd</br>
+			</p>
+        </div>
+    </footer>
+
+    <script>
+        // DATA
+        const flashcards = [
+            {
+                        "front": "Supervised learning",
+                        "back": "Learning from past examples where the correct answer (label) is already recorded, so the model learns to match those labels."
+            },
+            {
+                        "front": "Unsupervised learning",
+                        "back": "Finding structure (like groups or clusters) in data that has no recorded correct answer or label."
+            },
+            {
+                        "front": "Reinforcement learning",
+                        "back": "Learning from actions and rewards: the data the system sees depends on the actions it chose, and feedback arrives as a reward rather than a label."
+            },
+            {
+                        "front": "Rule vs. model",
+                        "back": "A rule is a small set of fixed conditions written by a human; a model is learned from data and is used when a rule cannot capture the pattern."
+            },
+            {
+                        "front": "Build-buy-partner decision",
+                        "back": "A weighted-criteria choice: build when the capability strongly differentiates the company, buy when the task is common and vendors are mature, partner in between."
+            },
+            {
+                        "front": "CRISP-DM-style six-stage workflow",
+                        "back": "Problem definition, data collection, feature engineering, model training, evaluation, and deployment & monitoring — with feedback loops back to earlier stages."
+            },
+            {
+                        "front": "Loss function",
+                        "back": "A measure of how wrong the model's predictions are compared to the true labels; training tries to make this number as small as possible."
+            },
+            {
+                        "front": "Gradient descent",
+                        "back": "An iterative method that updates model parameters a small step at a time, in the direction that reduces the loss function."
+            },
+            {
+                        "front": "Overfitting",
+                        "back": "When a model fits the training data almost perfectly (near-zero training loss) but performs much worse on new, unseen test data."
+            },
+            {
+                        "front": "Test set",
+                        "back": "Data held out and never used during training, used to check whether the model generalises to learners or cases it has never seen."
+            },
+            {
+                        "front": "Feature",
+                        "back": "A single measurable input variable, engineered from raw data, that the model uses to make a prediction."
+            },
+            {
+                        "front": "Data leakage",
+                        "back": "When a feature secretly contains information about the target that would not be available at prediction time, making evaluation misleadingly optimistic."
+            },
+            {
+                        "front": "One-hot encoding",
+                        "back": "Turning a categorical value like 'platform = ios' into separate 0/1 columns so a model can use it numerically."
+            },
+            {
+                        "front": "Normalization / scaling",
+                        "back": "Rescaling a numeric column (like lessons in the last 30 days) onto a common range so no single feature dominates due to its scale."
+            },
+            {
+                        "front": "Regression",
+                        "back": "A supervised-learning task that predicts a continuous number, such as minutes practised next week."
+            },
+            {
+                        "front": "Classification",
+                        "back": "A supervised-learning task that predicts a category or class, such as whether a learner will churn."
+            },
+            {
+                        "front": "Logistic regression output",
+                        "back": "A probability (between 0 and 1) that a given case belongs to the positive class, before a threshold turns it into a decision."
+            },
+            {
+                        "front": "Decision threshold",
+                        "back": "The probability cut-off (e.g., 0.5) above which a prediction is classified as positive; lowering it catches more positives but raises false positives."
+            },
+            {
+                        "front": "Confusion matrix",
+                        "back": "A table of true positives, false positives, false negatives and true negatives comparing a model's or rule's predictions against the real labels."
+            },
+            {
+                        "front": "Accuracy",
+                        "back": "The fraction of all cases the model got right: (TP + TN) divided by all cases."
+            },
+            {
+                        "front": "Precision",
+                        "back": "Of every case predicted positive, the fraction that was actually positive: TP divided by (TP + FP)."
+            },
+            {
+                        "front": "Recall",
+                        "back": "Of every case that was actually positive, the fraction the model correctly found: TP divided by (TP + FN)."
+            },
+            {
+                        "front": "Payback period",
+                        "back": "The time needed for a model's or rule's cost savings to cover its one-off build cost plus ongoing upkeep."
+            },
+            {
+                        "front": "Data drift",
+                        "back": "A gradual change in incoming data so it no longer resembles the training data, which can silently degrade a deployed model's accuracy."
+            },
+            {
+                        "front": "Deployment & monitoring",
+                        "back": "Stage 6 of the workflow: serving predictions inside the product or process, and watching accuracy and data drift over time."
+            }
+];
+
+        const quizQuestions = [
+            {
+                        "type": "mcq",
+                        "topic": "The Six-Stage ML Workflow",
+                        "question": "Which of the following is a properly defined target?",
+                        "hint": "A target names what is predicted, for which unit, at which moment.",
+                        "options": [
+                                    {
+                                                "text": "Improve course quality with AI",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: a wish, with no unit, moment or measurable quantity."
+                                    },
+                                    {
+                                                "text": "The number of reviewer corrections a draft lesson will need, predicted when the draft is produced",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. A number, per lesson, at a defined moment."
+                                    },
+                                    {
+                                                "text": "Use a large language model for content",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: a tool choice, not a target."
+                                    },
+                                    {
+                                                "text": "Make learners happier",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: no unit, moment or measurement."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "ML/AI Families (Supervised, Unsupervised, Reinforcement)",
+                        "question": "Which statement about choosing a family is correct?",
+                        "hint": "Recall the sentence: 'the question decides, not the algorithm'.",
+                        "options": [
+                                    {
+                                                "text": "The algorithm chosen determines the family",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the family is decided before any algorithm is chosen."
+                                    },
+                                    {
+                                                "text": "The family is decided by the available signal: labels, structure or rewards",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. The three routing questions ask which signal exists for the problem."
+                                    },
+                                    {
+                                                "text": "All three families require labels",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: unsupervised learning has no labels and reinforcement learning uses rewards."
+                                    },
+                                    {
+                                                "text": "Unsupervised learning predicts a number for each example",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: predicting a number from labels is supervised regression."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "The Six-Stage ML Workflow",
+                        "question": "In the classroom simulation, what changed between run 1 and run 2?",
+                        "hint": "Only one stage's stop probability was changed.",
+                        "options": [
+                                    {
+                                                "text": "A better algorithm was used at stage 4",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: stages 2 to 6 were untouched."
+                                    },
+                                    {
+                                                "text": "The stage-1 stop probability fell from 35% to 10% after the checklist",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Improving problem definition alone raised the number of projects reaching production by roughly a third."
+                                    },
+                                    {
+                                                "text": "More data was collected at stage 2",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the stage-2 probability was unchanged."
+                                    },
+                                    {
+                                                "text": "Two stages were removed",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: all six stages remained."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Evaluation Metrics, ROI & Monitoring",
+                        "question": "A billing-ticket model costs 17,400 euros to build plus 500 euros a month to maintain, and saves about 3,600 euros a month in agent time. Roughly how should the payback period be judged?",
+                        "hint": "Compare the one-off build cost against the net monthly saving after upkeep.",
+                        "options": [
+                                    {
+                                                "text": "Under six months, because the net monthly saving quickly covers the one-off build cost",
+                                                "isCorrect": true,
+                                                "rationale": "Correct: net saving is about 3,100 euros a month (3,600 minus 500 upkeep), so the 17,400-euro build cost is recovered in well under six months."
+                                    },
+                                    {
+                                                "text": "Never, because the monthly upkeep exceeds the monthly saving",
+                                                "isCorrect": false,
+                                                "rationale": "Not true: 500 euros of upkeep is far smaller than the 3,600-euro saving."
+                                    },
+                                    {
+                                                "text": "Over five years, because build costs always dominate small savings",
+                                                "isCorrect": false,
+                                                "rationale": "The numbers given do not support such a long payback; the monthly saving is large relative to the build cost."
+                                    },
+                                    {
+                                                "text": "Immediately, with no meaningful cost to recover",
+                                                "isCorrect": false,
+                                                "rationale": "There is a real one-off cost of 17,400 euros that must be recovered over time, so payback is not instant."
+                                    }
+                        ]
+            },
+            {
+                        "type": "msq",
+                        "topic": "Loss Functions & the Training Loop",
+                        "question": "Which of the following are signs or causes of overfitting? (4)",
+                        "hint": "Think about the polynomial through eight points.",
+                        "options": [
+                                    {
+                                                "text": "Training loss far below the test loss",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: the diagnostic gap."
+                                    },
+                                    {
+                                                "text": "A model with as many parameters as training examples",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: it can pass through every point."
+                                    },
+                                    {
+                                                "text": "A prediction curve that swings widely between training points",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: it reproduces noise as if it were law."
+                                    },
+                                    {
+                                                "text": "Training loss equal to the test loss",
+                                                "isCorrect": false,
+                                                "rationale": "No: equal losses indicate generalisation."
+                                    },
+                                    {
+                                                "text": "Low loss on data the model never saw",
+                                                "isCorrect": false,
+                                                "rationale": "No: that is the desired outcome."
+                                    },
+                                    {
+                                                "text": "Test loss rising while training loss keeps falling",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: the curve on Slide V10; stop training at the lowest test loss."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Feature Engineering",
+                        "question": "The column lessons30d ranges from 1 to 6 across the learners. After min-max scaling, what value does the learner with 6 lessons get?",
+                        "hint": "(value minus min) divided by (max minus min).",
+                        "options": [
+                                    {
+                                                "text": "6",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: scaling maps the maximum to 1."
+                                    },
+                                    {
+                                                "text": "1",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. (6 minus 1) divided by (6 minus 1) equals 1."
+                                    },
+                                    {
+                                                "text": "0",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: 0 is the value of the minimum (1 lesson)."
+                                    },
+                                    {
+                                                "text": "0.5",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: 0.5 would correspond to 3.5 lessons."
+                                    }
+                        ]
+            },
+            {
+                        "type": "msq",
+                        "topic": "Feature Engineering",
+                        "question": "Select every property of a good feature. (4)",
+                        "hint": "Three properties at the end of the script, plus what a model needs numerically.",
+                        "options": [
+                                    {
+                                                "text": "Available at prediction time",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: the leakage check."
+                                    },
+                                    {
+                                                "text": "Numeric, or encoded to numeric",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: models multiply inputs by weights."
+                                    },
+                                    {
+                                                "text": "Computed from information recorded after the outcome",
+                                                "isCorrect": false,
+                                                "rationale": "No: that is leakage."
+                                    },
+                                    {
+                                                "text": "Explainable to the person who acts on the prediction",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: a retention manager must be able to act on it."
+                                    },
+                                    {
+                                                "text": "Stable across product changes",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: a feature whose meaning shifts silently breaks the model."
+                                    },
+                                    {
+                                                "text": "Identical to the raw log rows",
+                                                "isCorrect": false,
+                                                "rationale": "No: raw rows are per event, not per unit, and contain text and timestamps."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Evaluation Metrics, ROI & Monitoring",
+                        "question": "Precision is defined as which ratio?",
+                        "hint": "Precision asks: of everything the model called positive, how much was actually positive?",
+                        "options": [
+                                    {
+                                                "text": "True positives divided by all predicted positives (TP + FP)",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Precision measures how trustworthy a positive prediction is."
+                                    },
+                                    {
+                                                "text": "True positives divided by all real positives (TP + FN)",
+                                                "isCorrect": false,
+                                                "rationale": "That ratio is recall, not precision."
+                                    },
+                                    {
+                                                "text": "True positives plus true negatives divided by all cases",
+                                                "isCorrect": false,
+                                                "rationale": "That is accuracy, not precision."
+                                    },
+                                    {
+                                                "text": "False positives divided by all predicted positives",
+                                                "isCorrect": false,
+                                                "rationale": "This is closer to a false-discovery rate, not precision."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Rule vs Model vs Build-Buy-Partner",
+                        "question": "A keyword rule routes 90% of billing tickets correctly and a model is estimated at 95%. Which question must be answered before building the model?",
+                        "hint": "Slide V3, question 2: is the extra accuracy worth its cost?",
+                        "options": [
+                                    {
+                                                "text": "Which algorithm has the highest published accuracy?",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the algorithm is chosen after the business case exists."
+                                    },
+                                    {
+                                                "text": "How many misroutes would be avoided per month, and what does one misroute cost?",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Errors avoided times cost per error against the cost of data, building and upkeep gives the payback period."
+                                    },
+                                    {
+                                                "text": "Which cloud provider should host the model?",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: hosting is a stage-6 question, after the decision to build."
+                                    },
+                                    {
+                                                "text": "How many features will the model have?",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: feature design is stage 3 and does not decide whether a model is worth it."
+                                    }
+                        ]
+            },
+            {
+                        "type": "msq",
+                        "topic": "Rule vs Model vs Build-Buy-Partner",
+                        "question": "Which of the following are criteria in the build-buy-partner scoring? (4)",
+                        "hint": "Five criteria with weights 0.30, 0.25, 0.20, 0.15 and 0.10.",
+                        "options": [
+                                    {
+                                                "text": "Strategic differentiation",
+                                                "isCorrect": true,
+                                                "rationale": "Yes, weight 0.30."
+                                    },
+                                    {
+                                                "text": "Speed to value",
+                                                "isCorrect": true,
+                                                "rationale": "Yes, weight 0.25."
+                                    },
+                                    {
+                                                "text": "The number of parameters of the model",
+                                                "isCorrect": false,
+                                                "rationale": "No: a technical property, not a sourcing criterion."
+                                    },
+                                    {
+                                                "text": "Control of data and model behaviour",
+                                                "isCorrect": true,
+                                                "rationale": "Yes, weight 0.15."
+                                    },
+                                    {
+                                                "text": "In-house skills needed",
+                                                "isCorrect": true,
+                                                "rationale": "Yes, weight 0.10."
+                                    },
+                                    {
+                                                "text": "The executive's personal preference for a vendor",
+                                                "isCorrect": false,
+                                                "rationale": "No: preferences are not a criterion; the table exists to replace them with ratings."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Regression, Classification & Thresholds",
+                        "question": "Lowering the churn threshold from 0.5 to 0.3 does what?",
+                        "hint": "More or fewer learners are flagged?",
+                        "options": [
+                                    {
+                                                "text": "Flags fewer learners and sends fewer offers",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: a lower threshold flags more learners."
+                                    },
+                                    {
+                                                "text": "Flags more learners: fewer missed churners, more unneeded offers",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. False negatives fall, false positives rise; the costs decide which is better."
+                                    },
+                                    {
+                                                "text": "Changes the trained weights",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the model is unchanged; only the decision rule moves."
+                                    },
+                                    {
+                                                "text": "Changes the loss function",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the loss belongs to training, the threshold to the decision."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "The Six-Stage ML Workflow",
+                        "question": "What does the dashed arrow from stage 6 back to stage 1 represent?",
+                        "hint": "Why would a deployed model require redefining the problem?",
+                        "options": [
+                                    {
+                                                "text": "Retraining the model every night",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: retraining stays within stages 4 to 6."
+                                    },
+                                    {
+                                                "text": "A changed business goal, or data drift, making the original definition obsolete",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Monitoring reveals that the world or the goal changed, so stage 1 has to be revisited."
+                                    },
+                                    {
+                                                "text": "Cleaning the data again",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: that is a loop to stage 3."
+                                    },
+                                    {
+                                                "text": "The end of the project",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: deployment is the start of monitoring, not the end."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Evaluation Metrics, ROI & Monitoring",
+                        "question": "A deployed churn model's accuracy quietly drops months after launch because new learners behave differently from the original training data. Which concept does this describe?",
+                        "hint": "The model did not change; the world it makes predictions about did.",
+                        "options": [
+                                    {
+                                                "text": "Data drift",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Data drift is when the incoming data's patterns shift away from what the model was trained on, degrading performance over time."
+                                    },
+                                    {
+                                                "text": "Overfitting",
+                                                "isCorrect": false,
+                                                "rationale": "Overfitting is a training-time problem where the model memorises training data; it does not explain a later real-world performance drop caused by changing data."
+                                    },
+                                    {
+                                                "text": "Leakage",
+                                                "isCorrect": false,
+                                                "rationale": "Leakage means a feature secretly contains the answer during training; it is not about performance decay after deployment."
+                                    },
+                                    {
+                                                "text": "Underfitting",
+                                                "isCorrect": false,
+                                                "rationale": "Underfitting means the model was too simple to learn the pattern in the first place, not a later decline after a good start."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Regression, Classification & Thresholds",
+                        "question": "What does logistic regression output for one learner?",
+                        "hint": "Think of the sigmoid's range.",
+                        "options": [
+                                    {
+                                                "text": "A category directly",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the category appears only after a threshold is applied."
+                                    },
+                                    {
+                                                "text": "A probability between 0 and 1",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. The sigmoid maps the weighted sum to (0, 1), read as the probability of the positive class."
+                                    },
+                                    {
+                                                "text": "Any real number",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: that is the weighted sum before the sigmoid."
+                                    },
+                                    {
+                                                "text": "A cluster identifier",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: clusters belong to unsupervised learning."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Loss Functions & the Training Loop",
+                        "question": "What does the loss function measure?",
+                        "hint": "One number computed from predictions and labels.",
+                        "options": [
+                                    {
+                                                "text": "The number of features in the table",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the loss is about prediction errors, not table width."
+                                    },
+                                    {
+                                                "text": "How far the predictions are from the labels, summarised as one number",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Mean squared error averages the squared differences; training makes this number smaller."
+                                    },
+                                    {
+                                                "text": "The training time in seconds",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: time is not part of the loss."
+                                    },
+                                    {
+                                                "text": "The learning rate",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the learning rate is a hyperparameter chosen by hand."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Evaluation Metrics, ROI & Monitoring",
+                        "question": "A support-ticket rule produces 2 false positives and 3 false negatives out of 20 tickets, with 15 correctly classified. What does the false-negative count represent?",
+                        "hint": "A false negative is a real positive case the rule labelled negative.",
+                        "options": [
+                                    {
+                                                "text": "Billing tickets that were real but the rule said were not billing",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. A false negative is a case that truly belongs to the positive class (billing) but the rule predicted the negative class."
+                                    },
+                                    {
+                                                "text": "Non-billing tickets the rule correctly labelled as non-billing",
+                                                "isCorrect": false,
+                                                "rationale": "That describes a true negative, not a false negative."
+                                    },
+                                    {
+                                                "text": "Billing tickets the rule correctly flagged as billing",
+                                                "isCorrect": false,
+                                                "rationale": "That describes a true positive."
+                                    },
+                                    {
+                                                "text": "Non-billing tickets the rule incorrectly flagged as billing",
+                                                "isCorrect": false,
+                                                "rationale": "That describes a false positive, the opposite error."
+                                    }
+                        ]
+            },
+            {
+                        "type": "msq",
+                        "topic": "The Six-Stage ML Workflow",
+                        "question": "Which feedback loops between stages exist in the workflow? (4)",
+                        "hint": "Look at the three dashed arrows on the overview slide and the script's examples.",
+                        "options": [
+                                    {
+                                                "text": "Data collection back to problem definition (no usable data)",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: when the target was never recorded, the problem must be redefined."
+                                    },
+                                    {
+                                                "text": "Evaluation back to data preparation (a feature was computed wrongly)",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: evaluation often reveals data problems."
+                                    },
+                                    {
+                                                "text": "Deployment back to problem definition (goal changed or data drifted)",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: the long arrow on the slide."
+                                    },
+                                    {
+                                                "text": "Model training never sends a project backwards",
+                                                "isCorrect": false,
+                                                "rationale": "No: training can reveal that features or data are inadequate."
+                                    },
+                                    {
+                                                "text": "Evaluation back to model training (retune and retrain)",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: poor evaluation results commonly lead to retraining."
+                                    },
+                                    {
+                                                "text": "Problem definition forward straight to deployment",
+                                                "isCorrect": false,
+                                                "rationale": "No: stages cannot be skipped."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "msq",
+                        "topic": "Loss Functions & the Training Loop",
+                        "question": "Select every true statement about the training loop. (4)",
+                        "hint": "Five steps repeated; which set is used inside the loop?",
+                        "options": [
+                                    {
+                                                "text": "It repeats predict, compute loss, compute gradient, update parameters",
+                                                "isCorrect": true,
+                                                "rationale": "True: the five steps of Slide V7."
+                                    },
+                                    {
+                                                "text": "The loss should fall over the iterations if training is healthy",
+                                                "isCorrect": true,
+                                                "rationale": "True: steep drop, then flattening."
+                                    },
+                                    {
+                                                "text": "The parameters start at their final values",
+                                                "isCorrect": false,
+                                                "rationale": "False: they start at zero or at random values."
+                                    },
+                                    {
+                                                "text": "One iteration processes the training examples once",
+                                                "isCorrect": true,
+                                                "rationale": "True (with eight rows, one iteration is one epoch)."
+                                    },
+                                    {
+                                                "text": "The test set is used inside the loop to update the parameters",
+                                                "isCorrect": false,
+                                                "rationale": "False: the test set is locked away until training ends."
+                                    },
+                                    {
+                                                "text": "The learning rate controls the size of each update step",
+                                                "isCorrect": true,
+                                                "rationale": "True: it multiplies the gradient."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "msq",
+                        "topic": "Rule vs Model vs Build-Buy-Partner",
+                        "question": "Select every legitimate reason not to use machine learning for a problem. (4)",
+                        "hint": "The three questions of Slide V3 each give a reason.",
+                        "options": [
+                                    {
+                                                "text": "A rule already reaches the accuracy the business needs",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: question 1 answered with yes."
+                                    },
+                                    {
+                                                "text": "No labelled data exists and none can be collected within a reasonable time",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: question 3 answered with no."
+                                    },
+                                    {
+                                                "text": "The value of the errors avoided is smaller than the cost of building and maintaining the model",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: question 2 answered with no."
+                                    },
+                                    {
+                                                "text": "The problem involves numbers",
+                                                "isCorrect": false,
+                                                "rationale": "No: numbers are what models handle; this is not a reason."
+                                    },
+                                    {
+                                                "text": "The pattern is stable and fully known to the experts",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: a known, stable pattern is best written down as a rule."
+                                    },
+                                    {
+                                                "text": "A competitor uses machine learning for the same task",
+                                                "isCorrect": false,
+                                                "rationale": "No: a competitor's choice does not answer any of the three questions."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Loss Functions & the Training Loop",
+                        "question": "In gradient descent, how are the parameters updated at each iteration?",
+                        "hint": "new = old minus something.",
+                        "options": [
+                                    {
+                                                "text": "Moved in the direction of the gradient",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the gradient points where the loss rises; moving along it increases the loss."
+                                    },
+                                    {
+                                                "text": "Moved against the gradient, scaled by the learning rate",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. new = old minus learning rate times gradient."
+                                    },
+                                    {
+                                                "text": "Set to random values",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: random values are only the starting point in some methods, never the update."
+                                    },
+                                    {
+                                                "text": "Updated once at the end of training",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the update happens in every iteration."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Regression, Classification & Thresholds",
+                        "question": "What decides whether a supervised problem is regression or classification?",
+                        "hint": "Slide V12 has one question on it.",
+                        "options": [
+                                    {
+                                                "text": "The number of features",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the same features can feed both tasks."
+                                    },
+                                    {
+                                                "text": "The type of the output: a number on a scale or one of a fixed set of categories",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. The label column decides, and with it the loss and the use of the output."
+                                    },
+                                    {
+                                                "text": "The size of the dataset",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: size affects overfitting risk, not the task type."
+                                    },
+                                    {
+                                                "text": "The learning rate",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: a training hyperparameter."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Regression, Classification & Thresholds",
+                        "question": "'How many minutes will this learner practise next week?' is which task?",
+                        "hint": "What kind of thing is the answer?",
+                        "options": [
+                                    {
+                                                "text": "Classification",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the answer is not a category."
+                                    },
+                                    {
+                                                "text": "Regression",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. The answer is a number on a scale."
+                                    },
+                                    {
+                                                "text": "Clustering",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: clustering finds groups without labels."
+                                    },
+                                    {
+                                                "text": "Reinforcement learning",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: no actions or rewards are involved."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Evaluation Metrics, ROI & Monitoring",
+                        "question": "In the six-stage machine-learning workflow, what happens at the deployment-and-monitoring stage?",
+                        "hint": "This is the stage after evaluation, once the model is actually serving predictions.",
+                        "options": [
+                                    {
+                                                "text": "The model serves live predictions while its accuracy and incoming data are watched for change over time",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Deployment puts the model into the product or process; monitoring watches for accuracy drops and data drift afterward."
+                                    },
+                                    {
+                                                "text": "A loss function is chosen and the training loop is run for the first time",
+                                                "isCorrect": false,
+                                                "rationale": "That describes stage 4, model training, not deployment and monitoring."
+                                    },
+                                    {
+                                                "text": "Raw data is first collected from logs and databases",
+                                                "isCorrect": false,
+                                                "rationale": "That describes an earlier data-collection stage, not deployment."
+                                    },
+                                    {
+                                                "text": "The business problem is translated into a defined prediction target",
+                                                "isCorrect": false,
+                                                "rationale": "That describes stage 1, problem definition, which comes long before deployment."
+                                    }
+                        ]
+            },
+            {
+                        "type": "msq",
+                        "topic": "Feature Engineering",
+                        "question": "Select every transformation used in the feature-engineering example. (4)",
+                        "hint": "Five boxes in the middle column of Slide V11.",
+                        "options": [
+                                    {
+                                                "text": "Counting lessons over a 7-day and a 30-day window",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: lessons7d and lessons30d."
+                                    },
+                                    {
+                                                "text": "Recency: days since the last lesson",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: daysSinceLast."
+                                    },
+                                    {
+                                                "text": "One-hot encoding of the main platform",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: isIos, isAndroid, isWeb."
+                                    },
+                                    {
+                                                "text": "Translating the lesson content into French",
+                                                "isCorrect": false,
+                                                "rationale": "No: not a feature transformation."
+                                    },
+                                    {
+                                                "text": "Min-max scaling of a column",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: lessons30d_scaled."
+                                    },
+                                    {
+                                                "text": "Deleting learners with fewer than three lessons",
+                                                "isCorrect": false,
+                                                "rationale": "No: the new learner u4 was kept; deleting rows changes what the model can predict for new learners."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "msq",
+                        "topic": "ML/AI Families (Supervised, Unsupervised, Reinforcement)",
+                        "question": "Select every problem below that is a supervised-learning problem. (3)",
+                        "hint": "For each one ask: is the correct answer for past cases already recorded, and does the system not act?",
+                        "options": [
+                                    {
+                                                "text": "Predicting minutes practised next week from past behaviour, with past weeks recorded",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: the label (minutes) exists for past weeks."
+                                    },
+                                    {
+                                                "text": "Grouping learners into segments nobody has defined",
+                                                "isCorrect": false,
+                                                "rationale": "No: no label exists; this is clustering."
+                                    },
+                                    {
+                                                "text": "Routing tickets when agents have tagged thousands of past tickets",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: the tags are labels."
+                                    },
+                                    {
+                                                "text": "Choosing which notification to send and learning from whether the learner returned",
+                                                "isCorrect": false,
+                                                "rationale": "No: the system acts and the feedback depends on its choice; reinforcement learning."
+                                    },
+                                    {
+                                                "text": "Predicting churn, given records of which learners churned in the past",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: churned or stayed is a recorded label."
+                                    },
+                                    {
+                                                "text": "Compressing 200 usage variables into 5 summary variables",
+                                                "isCorrect": false,
+                                                "rationale": "No: there is no correct answer to copy; dimensionality reduction is unsupervised."
+                                    }
+                        ],
+                        "correctCount": 3
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Feature Engineering",
+                        "question": "What is one row of the feature table in the churn example?",
+                        "hint": "The model needs one row per unit of prediction.",
+                        "options": [
+                                    {
+                                                "text": "One completed lesson",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: that is a row of the raw event log."
+                                    },
+                                    {
+                                                "text": "One learner",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Churn is predicted per learner, so the table has one row per learner."
+                                    },
+                                    {
+                                                "text": "One day",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: days appear inside features (windows, recency), not as rows."
+                                    },
+                                    {
+                                                "text": "One platform",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: platform is a feature (one-hot columns), not the unit."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Feature Engineering",
+                        "question": "Why cannot a model use the value 'platform = ios' directly?",
+                        "hint": "What does a model do with its inputs?",
+                        "options": [
+                                    {
+                                                "text": "The word is too long",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: length is irrelevant."
+                                    },
+                                    {
+                                                "text": "A model multiplies inputs by weights, and a text category has no numeric value until it is encoded",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. One-hot encoding turns the category into 0/1 columns the model can weight."
+                                    },
+                                    {
+                                                "text": "iOS devices are not supported",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the platform is a normal category."
+                                    },
+                                    {
+                                                "text": "Platform is a label, not a feature",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: platform is an input known at prediction time."
+                                    }
+                        ]
+            },
+            {
+                        "type": "msq",
+                        "topic": "Regression, Classification & Thresholds",
+                        "question": "Select every true statement about the decision threshold. (4)",
+                        "hint": "The threshold is part of the decision, not of the training.",
+                        "options": [
+                                    {
+                                                "text": "It is chosen from the business cost of the two error types",
+                                                "isCorrect": true,
+                                                "rationale": "True: missed churner versus unneeded offer."
+                                    },
+                                    {
+                                                "text": "It is always 0.5",
+                                                "isCorrect": false,
+                                                "rationale": "False: 0.5 is only a default; the costs decide."
+                                    },
+                                    {
+                                                "text": "Lowering it flags more positive cases",
+                                                "isCorrect": true,
+                                                "rationale": "True: more probabilities exceed a lower threshold."
+                                    },
+                                    {
+                                                "text": "Changing it requires retraining the model",
+                                                "isCorrect": false,
+                                                "rationale": "False: the model and its weights are unchanged."
+                                    },
+                                    {
+                                                "text": "The same model can serve different thresholds for different campaigns",
+                                                "isCorrect": true,
+                                                "rationale": "True: each campaign has its own costs."
+                                    },
+                                    {
+                                                "text": "It turns a probability into a class",
+                                                "isCorrect": true,
+                                                "rationale": "True: above the threshold, positive; otherwise, negative."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "msq",
+                        "topic": "The Six-Stage ML Workflow",
+                        "question": "Select every item that belongs on the stage-1 problem-definition checklist. (4)",
+                        "hint": "Five questions: decision, target, metric, baseline and error cost, data and owner.",
+                        "options": [
+                                    {
+                                                "text": "Which decision the prediction will change, who makes it, and how often",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: question one."
+                                    },
+                                    {
+                                                "text": "Which business metric must move, by how much, and by when",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: question three."
+                                    },
+                                    {
+                                                "text": "Which algorithm to use",
+                                                "isCorrect": false,
+                                                "rationale": "No: the algorithm is chosen at stage 4."
+                                    },
+                                    {
+                                                "text": "What one error costs, and what the current baseline achieves",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: question four."
+                                    },
+                                    {
+                                                "text": "Which data records the target and who owns access to it",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: question five."
+                                    },
+                                    {
+                                                "text": "Which hardware to buy for training",
+                                                "isCorrect": false,
+                                                "rationale": "No: infrastructure is decided later and rarely determines success."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "msq",
+                        "topic": "ML/AI Families (Supervised, Unsupervised, Reinforcement)",
+                        "question": "Which statements about labels are true? (4)",
+                        "hint": "A label is a recorded correct answer; think about where labels come from and which families need them.",
+                        "options": [
+                                    {
+                                                "text": "A label is the recorded correct answer for a past example",
+                                                "isCorrect": true,
+                                                "rationale": "True by definition."
+                                    },
+                                    {
+                                                "text": "Labels can be produced by human tagging",
+                                                "isCorrect": true,
+                                                "rationale": "True: support agents tagging tickets produce labels."
+                                    },
+                                    {
+                                                "text": "Labels are required for unsupervised learning",
+                                                "isCorrect": false,
+                                                "rationale": "False: unsupervised learning works without labels."
+                                    },
+                                    {
+                                                "text": "Corrections made to a rule's output can become labels",
+                                                "isCorrect": true,
+                                                "rationale": "True: every correction is a labelled example (Sub-topic 2)."
+                                    },
+                                    {
+                                                "text": "A label must always be a number",
+                                                "isCorrect": false,
+                                                "rationale": "False: a label can be a category such as billing or other."
+                                    },
+                                    {
+                                                "text": "Reinforcement learning replaces labels with rewards",
+                                                "isCorrect": true,
+                                                "rationale": "True: the agent learns from reward signals rather than from labelled examples."
+                                    }
+                        ],
+                        "correctCount": 4
+            },
+            {
+                        "type": "mcq",
+                        "topic": "ML/AI Families (Supervised, Unsupervised, Reinforcement)",
+                        "question": "Duolingo has records of millions of past exercises, each marked right or wrong, and wants to predict whether a learner will answer the next exercise correctly. Which family does this problem need?",
+                        "hint": "Ask question B: is the correct answer for past cases already recorded?",
+                        "options": [
+                                    {
+                                                "text": "Supervised learning",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Every past exercise carries a label (right or wrong), so a model can be trained to match those labels."
+                                    },
+                                    {
+                                                "text": "Unsupervised learning",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: unsupervised learning is used when no label exists, but here the outcome of every past exercise was recorded."
+                                    },
+                                    {
+                                                "text": "Reinforcement learning",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: predicting an outcome does not involve choosing actions and collecting rewards; the data does not depend on the model's decisions."
+                                    },
+                                    {
+                                                "text": "No learning: a fixed rule is required",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: 'right difficulty for this learner' cannot be written as a few stable conditions; that is exactly why Duolingo built a model."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "ML/AI Families (Supervised, Unsupervised, Reinforcement)",
+                        "question": "What distinguishes reinforcement learning from supervised learning in terms of the data the system learns from?",
+                        "hint": "Think about the reminder system: it only sees the outcome of the text it actually sent.",
+                        "options": [
+                                    {
+                                                "text": "It needs much larger datasets",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: dataset size is not the distinguishing property; some bandits learn from small amounts of feedback."
+                                    },
+                                    {
+                                                "text": "The data it sees depends on the actions it chose, and feedback arrives as a reward rather than as a label",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. The agent's own decisions generate the data; it never observes the outcome of the actions it did not take."
+                                    },
+                                    {
+                                                "text": "It only works with image data",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the family is defined by the signal, not by the data type."
+                                    },
+                                    {
+                                                "text": "It never uses feedback",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: reinforcement learning is defined by learning from feedback (rewards)."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Evaluation Metrics, ROI & Monitoring",
+                        "question": "In the build-buy-partner decision framework, which factor most justifies building a custom model in-house rather than buying an off-the-shelf one?",
+                        "hint": "Think about what a bought product can never provide: something unique to the company.",
+                        "options": [
+                                    {
+                                                "text": "The capability strongly differentiates the company from competitors",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. High differentiation value is the classic reason to build, since a vendor product cannot capture what makes the company unique, as with Birdbrain."
+                                    },
+                                    {
+                                                "text": "The task is common across many industries and companies",
+                                                "isCorrect": false,
+                                                "rationale": "A common, non-differentiating task like ticket routing favours buying, not building."
+                                    },
+                                    {
+                                                "text": "A vendor already offers a mature, cheaper solution",
+                                                "isCorrect": false,
+                                                "rationale": "This favours buying or partnering, not building from scratch."
+                                    },
+                                    {
+                                                "text": "The team has no data science expertise available",
+                                                "isCorrect": false,
+                                                "rationale": "Lack of internal expertise is a reason to avoid building in-house, not a reason to build."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Rule vs Model vs Build-Buy-Partner",
+                        "question": "When is a rule usually preferable to a model?",
+                        "hint": "Question 1 of the decision test.",
+                        "options": [
+                                    {
+                                                "text": "When the decision can be written as a few stable conditions that reach the needed accuracy",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Transparent, cheap, stable, and it creates the baseline."
+                                    },
+                                    {
+                                                "text": "When a large labelled dataset already exists",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: available labels favour a model, not a rule."
+                                    },
+                                    {
+                                                "text": "When the pattern changes every week",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: frequently changing patterns make rules unmaintainable; that is Google's Rule 3 in favour of a model."
+                                    },
+                                    {
+                                                "text": "When accuracy of 99.9% is required and the conditions are many",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: many interacting conditions and very high accuracy are the situation where rules fail."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Rule vs Model vs Build-Buy-Partner",
+                        "question": "Birdbrain personalises every lesson and is central to Duolingo's product. Which criterion drives the build-buy-partner decision toward Build?",
+                        "hint": "Which criterion has weight 0.30 on Slide V4?",
+                        "options": [
+                                    {
+                                                "text": "Speed to value",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: speed favours buying."
+                                    },
+                                    {
+                                                "text": "Strategic differentiation",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. A capability that is the product itself is rated 5 on differentiation, which favours building and keeping control."
+                                    },
+                                    {
+                                                "text": "In-house skills needed",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: skills needed is a cost of building, not a reason for it."
+                                    },
+                                    {
+                                                "text": "Total cost over two years",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: cost favours buying."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "The Six-Stage ML Workflow",
+                        "question": "At which stage are most machine-learning projects abandoned?",
+                        "hint": "Which bar is the longest on the V5 overview slide?",
+                        "options": [
+                                    {
+                                                "text": "Model training",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: training failures are rare because algorithms are the mature part."
+                                    },
+                                    {
+                                                "text": "Problem definition",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Projects that skipped stage 1 discover months later that nothing can be measured or evaluated."
+                                    },
+                                    {
+                                                "text": "Deployment and monitoring",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: deployment problems are real but fewer than stage-1 failures."
+                                    },
+                                    {
+                                                "text": "Evaluation",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: evaluation reveals problems, but they mostly originate in stages 1 to 3."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Loss Functions & the Training Loop",
+                        "question": "A model reports a training loss of 0.0 and a test loss of 8,900. What is the situation?",
+                        "hint": "Compare the two numbers.",
+                        "options": [
+                                    {
+                                                "text": "A perfect model",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: perfection on training data with failure on test data is the signature of a problem."
+                                    },
+                                    {
+                                                "text": "Overfitting: the model memorised the training examples, including their noise",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. The gap between training and test loss is the diagnostic."
+                                    },
+                                    {
+                                                "text": "Underfitting: the model is too simple",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: an underfitting model has a high training loss as well."
+                                    },
+                                    {
+                                                "text": "Leakage in the features",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: leakage produces a good test score too, because the leaked column exists in the test set."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Loss Functions & the Training Loop",
+                        "question": "Why are four learners held out as a test set?",
+                        "hint": "What does the training loss fail to tell you?",
+                        "options": [
+                                    {
+                                                "text": "To make training faster",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: fewer training rows do speed things up slightly, but that is not the purpose."
+                                    },
+                                    {
+                                                "text": "To measure performance on data the model never saw",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Only that measurement indicates usefulness on new learners."
+                                    },
+                                    {
+                                                "text": "To create labels",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: the test rows already have labels."
+                                    },
+                                    {
+                                                "text": "To scale the features",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: scaling uses the training data."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Feature Engineering",
+                        "question": "Which feature would be leakage in a model that predicts churn within the next 14 days?",
+                        "hint": "Which value only exists after the outcome?",
+                        "options": [
+                                    {
+                                                "text": "Days since the last lesson",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: computable at prediction time."
+                                    },
+                                    {
+                                                "text": "Lessons in the last 7 days",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: computable at prediction time."
+                                    },
+                                    {
+                                                "text": "Whether the learner cancelled 10 days later",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. This is known only after the outcome; the model would read the answer from it and fail in production."
+                                    },
+                                    {
+                                                "text": "Mean share of correct answers",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: an aggregate of past rows."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "ML/AI Families (Supervised, Unsupervised, Reinforcement)",
+                        "question": "Marketing wants to discover natural groups of learners based on how they use the app. Nobody has defined the groups in advance. Which family?",
+                        "hint": "There is no label column; the groups are to be discovered.",
+                        "options": [
+                                    {
+                                                "text": "Supervised learning",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: there is no recorded correct answer ('type of learner') on any record."
+                                    },
+                                    {
+                                                "text": "Unsupervised learning (clustering)",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. Finding groups in unlabelled data is clustering, a form of unsupervised learning."
+                                    },
+                                    {
+                                                "text": "Reinforcement learning",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: no actions are chosen and no reward is received."
+                                    },
+                                    {
+                                                "text": "Regression",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: regression predicts a number from labels; here there are neither labels nor a number to predict."
+                                    }
+                        ]
+            },
+            {
+                        "type": "mcq",
+                        "topic": "Rule vs Model vs Build-Buy-Partner",
+                        "question": "What is the main practical benefit of shipping a rule before building a model?",
+                        "hint": "Think of the baseline and of what happens each time an agent corrects the rule.",
+                        "options": [
+                                    {
+                                                "text": "Rules are always more accurate than models",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: rules are usually less accurate; their advantage lies elsewhere."
+                                    },
+                                    {
+                                                "text": "It creates a measured baseline, and the corrections to the rule become the labels for the model",
+                                                "isCorrect": true,
+                                                "rationale": "Correct. The rule delivers value now, gives a number to beat, and produces training data."
+                                    },
+                                    {
+                                                "text": "It removes the need to evaluate the model later",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: evaluation is required for every model."
+                                    },
+                                    {
+                                                "text": "It avoids the need for monitoring",
+                                                "isCorrect": false,
+                                                "rationale": "Not this: rules also need monitoring, and models always do."
+                                    }
+                        ]
+            },
+            {
+                        "type": "msq",
+                        "topic": "Regression, Classification & Thresholds",
+                        "question": "Select every classification problem. (4)",
+                        "hint": "Is the answer one of a fixed set of categories?",
+                        "options": [
+                                    {
+                                                "text": "Is this support ticket about billing or something else?",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: two categories."
+                                    },
+                                    {
+                                                "text": "Will this learner churn within 14 days?",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: churned or stayed."
+                                    },
+                                    {
+                                                "text": "How much revenue will this course earn next quarter, in euros?",
+                                                "isCorrect": false,
+                                                "rationale": "No: a number; regression."
+                                    },
+                                    {
+                                                "text": "Will this learner answer the next exercise correctly?",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: right or wrong; Birdbrain's task."
+                                    },
+                                    {
+                                                "text": "How many minutes will the delivery take?",
+                                                "isCorrect": false,
+                                                "rationale": "No: a number; regression."
+                                    },
+                                    {
+                                                "text": "Is this transaction fraudulent or legitimate?",
+                                                "isCorrect": true,
+                                                "rationale": "Yes: two categories."
+                                    }
+                        ],
+                        "correctCount": 4
+            }
+];
+
+        // STATE
+        let currentCardIndex = 0;
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let resultsChart = null;
+        let selectedMSQIndices = new Set();
+        let answered = false;
+
+        // NAVIGATION
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('bg-white', 'text-indigo-600', 'shadow-sm', 'active');
+                b.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.add('bg-white', 'text-indigo-600', 'shadow-sm', 'active');
+            activeBtn.classList.remove('text-slate-600');
+        }
+
+        // FLASHCARD LOGIC
+        function updateCard() {
+            const card = flashcards[currentCardIndex];
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.remove('flipped');
+
+            setTimeout(() => {
+                document.getElementById('card-front-text').innerText = card.front;
+                document.getElementById('card-back-text').innerText = card.back;
+                document.getElementById('card-counter').innerText = `${currentCardIndex + 1} / ${flashcards.length}`;
+                document.getElementById('card-progress').style.width = `${((currentCardIndex + 1) / flashcards.length) * 100}%`;
+            }, 150);
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            updateCard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+            updateCard();
+        }
+
+        // QUIZ LOGIC
+        function startQuiz() {
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-active').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            answered = false;
+            selectedMSQIndices = new Set();
+
+            document.getElementById('quiz-question').innerText = q.question;
+            document.getElementById('quiz-progress-text').innerText = `Question ${currentQuizIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('quiz-hint').innerText = q.hint;
+            document.getElementById('quiz-hint').classList.add('hidden');
+            document.getElementById('hint-toggle-btn').innerText = "Need a hint? 💡";
+
+            const badge = document.getElementById('quiz-type-badge');
+            badge.innerText = q.type === 'mcq' ? 'MCQ · Single Answer' : `MSQ · Choose ${q.correctCount}`;
+            badge.className = 'text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide ' + (q.type === 'mcq' ? 'badge-mcq' : 'badge-msq');
+            document.getElementById('quiz-topic-badge').innerText = q.topic;
+
+            const optionsBox = document.getElementById('quiz-options');
+            optionsBox.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border-2 border-slate-100 hover:border-indigo-300 hover:bg-indigo-50 transition-all text-slate-700 font-medium quiz-opt-btn";
+                btn.innerText = opt.text;
+                if (q.type === 'mcq') {
+                    btn.onclick = () => selectMCQOption(idx);
+                } else {
+                    btn.onclick = () => toggleMSQOption(idx, btn);
+                }
+                optionsBox.appendChild(btn);
+            });
+
+            document.getElementById('quiz-submit-box').classList.toggle('hidden', q.type !== 'msq');
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('next-q-btn').classList.add('hidden');
+        }
+
+        function toggleMSQOption(idx, btn) {
+            if (answered) return;
+            if (selectedMSQIndices.has(idx)) {
+                selectedMSQIndices.delete(idx);
+                btn.classList.remove('border-indigo-500', 'bg-indigo-50');
+            } else {
+                selectedMSQIndices.add(idx);
+                btn.classList.add('border-indigo-500', 'bg-indigo-50');
+            }
+        }
+
+        function submitMSQ() {
+            if (answered) return;
+            const q = quizQuestions[currentQuizIndex];
+            answered = true;
+
+            document.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+            document.getElementById('quiz-submit-box').classList.add('hidden');
+
+            const correctSet = new Set(q.options.map((o, i) => o.isCorrect ? i : -1).filter(i => i !== -1));
+            const isFullyCorrect = correctSet.size === selectedMSQIndices.size &&
+                [...correctSet].every(i => selectedMSQIndices.has(i));
+
+            document.querySelectorAll('.quiz-opt-btn').forEach((b, i) => {
+                if (correctSet.has(i)) {
+                    b.classList.add('border-emerald-400', 'bg-emerald-50');
+                } else if (selectedMSQIndices.has(i)) {
+                    b.classList.add('border-rose-400', 'bg-rose-50');
+                }
+            });
+
+            if (isFullyCorrect) quizScore++;
+
+            const feedbackBox = document.getElementById('quiz-feedback');
+            feedbackBox.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
+            feedbackBox.classList.add(isFullyCorrect ? 'bg-emerald-50' : 'bg-rose-50', isFullyCorrect ? 'text-emerald-800' : 'text-rose-800', isFullyCorrect ? 'border-emerald-200' : 'border-rose-200');
+
+            let rationaleHtml = `<strong>${isFullyCorrect ? 'Correct!' : 'Not quite.'}</strong><br><br>`;
+            q.options.forEach(o => {
+                rationaleHtml += `<div style="margin-bottom:6px;"><strong>${o.isCorrect ? '✔' : '✘'} ${o.text}:</strong> ${o.rationale}</div>`;
+            });
+            feedbackBox.innerHTML = rationaleHtml;
+
+            document.getElementById('quiz-score-live').innerText = `Score: ${quizScore}`;
+            document.getElementById('next-q-btn').classList.remove('hidden');
+        }
+
+        function selectMCQOption(idx) {
+            if (answered) return;
+            answered = true;
+            const q = quizQuestions[currentQuizIndex];
+            const selected = q.options[idx];
+            const feedbackBox = document.getElementById('quiz-feedback');
+
+            document.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+
+            feedbackBox.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
+
+            if(selected.isCorrect) {
+                quizScore++;
+                feedbackBox.classList.add('bg-emerald-50', 'text-emerald-800', 'border-emerald-200');
+                feedbackBox.innerHTML = `<strong>Correct!</strong> ${selected.rationale}`;
+            } else {
+                feedbackBox.classList.add('bg-rose-50', 'text-rose-800', 'border-rose-200');
+                feedbackBox.innerHTML = `<strong>Incorrect.</strong> ${selected.rationale}`;
+            }
+
+            document.getElementById('quiz-score-live').innerText = `Score: ${quizScore}`;
+            document.getElementById('next-q-btn').classList.remove('hidden');
+        }
+
+        function toggleHint() {
+            const hint = document.getElementById('quiz-hint');
+            const btn = document.getElementById('hint-toggle-btn');
+            if(hint.classList.contains('hidden')) {
+                hint.classList.remove('hidden');
+                btn.innerText = "Hide hint";
+            } else {
+                hint.classList.add('hidden');
+                btn.innerText = "Need a hint? 💡";
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-active').classList.add('hidden');
+            document.getElementById('quiz-results').classList.remove('hidden');
+
+            document.getElementById('result-summary').innerText = `You scored ${quizScore} out of ${quizQuestions.length}`;
+
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            if (resultsChart) resultsChart.destroy();
+
+            resultsChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct', 'Incorrect'],
+                    datasets: [{
+                        data: [quizScore, quizQuestions.length - quizScore],
+                        backgroundColor: ['#10b981', '#f43f5e'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        function resetQuiz() {
+            quizScore = 0;
+            currentQuizIndex = 0;
+            document.getElementById('quiz-results').classList.add('hidden');
+            document.getElementById('quiz-intro').classList.remove('hidden');
+            document.getElementById('quiz-score-live').innerText = `Score: 0`;
+        }
+
+        // INIT
+        updateCard();
+    </script>
+</body>
+</html>
